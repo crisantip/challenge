@@ -1,44 +1,223 @@
-# NinjaOne Backend Interview Project
+# NinjaOne Backend Interview Project Solution
 
-This project contains [Instructions](INSTRUCTIONS.md) that must be read in order to perform NinjaOne's code assessment.
-Also the project is configured to use an in-memory H2 database that is volatile. If you wish to make it maintain data on
-application shut down, you can change the spring.database.jdbc-url to point at a file like `jdbc:h2:file:/{your file path here}`
+This project contains the technical challenge solution.
+
+For manual integration test you can use the 
+[Postman collection](RMM.postman_collection.json)
+
 
 ## Starting the Application
 
 Run the `BackendInterviewProjectApplication` class
 
-Go to:
-* http://localhost:8080/sample/1
-* http://localhost:8080/sample/2
+## Device Endpoints
 
-You should see results for both of these. The application is working and connected to the H2 database. 
+---
+**Funcionality:** Create a device
 
-## H2 Console 
+**Method:** POST
 
-In order to see and interact with your db, access the h2 console in your browser.
-After running the application, go to:
+**URL:** http://localhost:8080/devices
 
-http://localhost:8080/h2-console
+**Body example:**
 
-Enter the information for the url, username, and password in the application.yml:
+```json
+{
+  "type": "windows",
+  "systemName": "pc0158"
+}
+```
+---
+**Funcionality:** Delete a device
 
-```yml
-url: jdbc:h2:mem:localdb
-username: sa 
-password: password
+**Method:** DELETE
+
+**URL:** http://localhost:8080/devices/{deviceId}
+
+**Example:**
+
+```json
+http://localhost:8080/devices/4
 ```
 
-You should be able to see a db console now that has the Sample Repository in it.
 
-Type:
+## Service Endpoints
 
-```sql
-SELECT * FROM SAMPLE;
-````
+---
+**Funcionality:** Create a service
 
-Click `Run`, you should see two rows, for ids `1` and `2`
+**Method:** POST
 
-### Suggestions
+**URL:** http://localhost:8080/services
 
-Feel free to remove or repurpose the existing Sample Repository, Entity, Controller, and Service. 
+**Body example:**
+
+```json
+{
+  "name": "Office"
+}
+```
+---
+**Funcionality:** Delete a service
+
+**Method:** DELETE
+
+**URL:** http://localhost:8080/services/{serviceId}
+
+**Example:**
+
+```json
+http://localhost:8080/services/5
+```
+
+## Association Device and Service Endpoints
+
+---
+**Funcionality:** Create an association 
+
+**Method:** POST
+
+**URL:** http://localhost:8080/device-services
+
+**Body example:**
+
+```json
+{
+  "device": {
+    "id": 1
+  },
+  "service": {
+    "id": 4
+  },
+  "cost": 7
+}
+```
+---
+**Funcionality:** Delete an association
+
+**Method:** DELETE
+
+**URL:** http://localhost:8080/device-services/{deviceServiceId}
+
+**Example:**
+
+```json
+http://localhost:8080/device-services/9
+```
+
+## Invoice Endpoint
+
+---
+**Funcionality:** Calculate the total cost of the services and devices
+
+**Method:** GET
+
+**URL:** http://localhost:8080/invoices/{customerId}
+
+**Example:**
+
+```json
+http://localhost:8080/invoices/123
+```
+**Response example:**
+
+```json
+{
+  "customerId": "123",
+  "services": {
+    "1": {
+      "id": 1,
+      "name": "Device",
+      "totalServiceCost": 20.0,
+      "devices": [
+        {
+          "id": 1,
+          "type": "Windows",
+          "systemName": "PC01",
+          "quantity": 2,
+          "cost": 4.0,
+          "totalDeviceCost": 8.0
+        },
+        {
+          "id": 2,
+          "type": "Mac",
+          "systemName": "PC02",
+          "quantity": 3,
+          "cost": 4.0,
+          "totalDeviceCost": 12.0
+        }
+      ]
+    },
+    "2": {
+      "id": 2,
+      "name": "Antivirus",
+      "totalServiceCost": 31.0,
+      "devices": [
+        {
+          "id": 1,
+          "type": "Windows",
+          "systemName": "PC01",
+          "quantity": 2,
+          "cost": 5.0,
+          "totalDeviceCost": 10.0
+        },
+        {
+          "id": 2,
+          "type": "Mac",
+          "systemName": "PC02",
+          "quantity": 3,
+          "cost": 7.0,
+          "totalDeviceCost": 21.0
+        }
+      ]
+    },
+    "3": {
+      "id": 3,
+      "name": "Backup",
+      "totalServiceCost": 9.0,
+      "devices": [
+        {
+          "id": 1,
+          "type": "Windows",
+          "systemName": "PC01",
+          "quantity": 1,
+          "cost": 3.0,
+          "totalDeviceCost": 3.0
+        },
+        {
+          "id": 2,
+          "type": "Mac",
+          "systemName": "PC02",
+          "quantity": 2,
+          "cost": 3.0,
+          "totalDeviceCost": 6.0
+        }
+      ]
+    },
+    "4": {
+      "id": 4,
+      "name": "Screen Share",
+      "totalServiceCost": 4.0,
+      "devices": [
+        {
+          "id": 1,
+          "type": "Windows",
+          "systemName": "PC01",
+          "quantity": 2,
+          "cost": 1.0,
+          "totalDeviceCost": 2.0
+        },
+        {
+          "id": 2,
+          "type": "Mac",
+          "systemName": "PC02",
+          "quantity": 2,
+          "cost": 1.0,
+          "totalDeviceCost": 2.0
+        }
+      ]
+    }
+  },
+  "totalInvoiceCost": 64.0
+}
+```
