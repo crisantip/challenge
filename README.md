@@ -2,6 +2,8 @@
 
 This project contains the technical challenge solution.
 
+[Entity-Relationship Diagram](er-diagram.jpg)
+
 For manual integration test you can use the 
 [Postman collection](RMM.postman_collection.json)
 
@@ -36,7 +38,7 @@ Run the `BackendInterviewProjectApplication` class
 
 **Example:**
 
-```json
+```text
 http://localhost:8080/devices/4
 ```
 
@@ -66,7 +68,7 @@ http://localhost:8080/devices/4
 
 **Example:**
 
-```json
+```text
 http://localhost:8080/services/5
 ```
 
@@ -101,7 +103,7 @@ http://localhost:8080/services/5
 
 **Example:**
 
-```json
+```text
 http://localhost:8080/device-services/9
 ```
 
@@ -116,7 +118,7 @@ http://localhost:8080/device-services/9
 
 **Example:**
 
-```json
+```text
 http://localhost:8080/invoices/123
 ```
 **Response example:**
